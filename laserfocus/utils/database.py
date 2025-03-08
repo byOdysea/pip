@@ -5,8 +5,8 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 from functools import wraps
 
-from src.utils.logger import logger
-from src.utils.response import Response
+from .logger import logger
+from .response import Response
 
 class DatabaseHandler:
     

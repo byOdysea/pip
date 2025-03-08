@@ -1,4 +1,4 @@
-from src.utils.logger import logger
+from .logger import logger
 
 def handle_exception(func):
     def wrapper(*args, **kwargs):
