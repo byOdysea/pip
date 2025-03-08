@@ -6,7 +6,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="laserfocus",  # Replace with your package name
-    version="0.0.5",   # Start with a simple version
+    use_scm_version=True,
+    setup_requires=['setuptools_scm'],
     author="laserfocus",
     author_email="aa@laserfocus.space",
     description="A collection of utilities for laserfocus",
