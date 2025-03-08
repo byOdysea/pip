@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="laserfocus",  # Replace with your package name
-    version="0.0.2",   # Start with a simple version
+    version="0.0.4",   # Start with a simple version
     author="laserfocus",
     author_email="aa@laserfocus.space",
     description="A collection of utilities for laserfocus",

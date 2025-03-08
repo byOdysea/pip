@@ -5,8 +5,8 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 from functools import wraps
 
-from .logger import logger
-from .response import Response
+from src.utils.logger import logger
+from src.utils.response import Response
 
 class DatabaseHandler:
     
@@ -22,8 +22,11 @@ class DatabaseHandler:
         self.engine = engine
         self.type = type
         self.base = base
-
-        self.base.metadata.create_all(self.engine)
+        
+        try:
+            self.base.metadata.create_all(self.engine)
+        except Exception as e:
+            logger.error(f'Error creating tables: {str(e)}')
 
         self.metadata = MetaData()
         self.metadata.reflect(bind=self.engine)
@@ -74,41 +77,6 @@ class DatabaseHandler:
 
         return _create(table, data)
 
-    def update(self, table: str, params: dict, data: dict):
-        @self.with_session
-        def _update(session, table: str, params: dict, data: dict):
-            logger.info(f'Attempting to update entry in table: {table}')
-            
-            try:
-                tbl = Table(table, self.metadata, autoload_with=self.engine)
-                query = session.query(tbl)
-
-                for key, value in params.items():
-                    if hasattr(tbl.c, key):
-                        query = query.filter(getattr(tbl.c, key) == value)
-
-                item = query.first()
-
-                if not item:
-                    return Response.error(f"{table.capitalize()} with given parameters not found")
-                
-                logger.info(f'Updating entry timestamp.')
-                data['updated'] = datetime.now()
-
-                query.update(data)
-                session.flush()
-
-                updated_item = query.first()
-                logger.success(f"Successfully updated entry with id: {updated_item.id} in table: {table}.")
-                
-                return Response.success(updated_item.id)
-            
-            except SQLAlchemyError as e:
-                logger.error(f"Error updating {table}: {str(e)}")
-                return Response.error(f'Database error: {str(e)}')
-
-        return _update(table, params, data)
-
     def read(self, table: str, params: dict = None):
         @self.with_session
         def _read(session, table: str, params: dict = None):
@@ -135,6 +103,42 @@ class DatabaseHandler:
                 return Response.error(f'Database error: {str(e)}')
 
         return _read(table, params)
+
+    def update(self, table: str, params: dict, data: dict):
+        @self.with_session
+        def _update(session, table: str, params: dict, data: dict):
+            logger.info(f'Attempting to update entry in table: {table}')
+            
+            try:
+                tbl = Table(table, self.metadata, autoload_with=self.engine)
+                query = session.query(tbl)
+
+                for key, value in params.items():
+                    if hasattr(tbl.c, key):
+                        query = query.filter(getattr(tbl.c, key) == value)
+
+                item = query.first()
+
+                if not item:
+                    return Response.error(f"{table.capitalize()} with given parameters not found")
+                
+                logger.info(f'Updating entry timestamp.')
+                data['updated'] = datetime.now()
+
+                query.update(data)
+                session.flush()
+
+                updated_item = query.first()
+                logger.success(f"Successfully updated entry with id: {updated_item.id} in table: {table}.")
+
+                serialized_item = updated_item._asdict()
+                return Response.success(serialized_item)
+            
+            except SQLAlchemyError as e:
+                logger.error(f"Error updating {table}: {str(e)}")
+                return Response.error(f'Database error: {str(e)}')
+
+        return _update(table, params, data)
 
     def delete(self, table: str, params: dict):
         @self.with_session

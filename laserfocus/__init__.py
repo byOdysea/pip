@@ -1,2 +1,3 @@
 # laserfocus/__init__.py
-from .utils import api, logger, database, response
+from ...api.dev import browser
+from .utils import database, exception, logger, response
