@@ -160,7 +160,7 @@ class DatabaseHandler:
             session.execute(tbl.delete())
             session.flush()
             logger.success(f'Successfully deleted all entries from table: {table}')
-            return True
+            return {'status': 'success'}
 
         return _delete_all(table)
 
