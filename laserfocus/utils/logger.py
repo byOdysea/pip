@@ -46,6 +46,10 @@ class Logger:
         logging.getLogger('nltk').setLevel(logging.ERROR)
         logging.getLogger('chardet').setLevel(logging.ERROR)
         logging.getLogger('sqlalchemy').setLevel(logging.ERROR)
+        logging.getLogger('ib_insync').setLevel(logging.ERROR)
+        logging.getLogger('selector_events').setLevel(logging.ERROR)
+        logging.getLogger('google-auth').setLevel(logging.ERROR)
+        logging.getLogger('google.auth.transport.requests').setLevel(logging.ERROR)
         logging.getLogger('geventwebsocket').setLevel(logging.ERROR)
 
     def info(self, message):
@@ -66,7 +70,7 @@ class Logger:
         self.logger.warning(f"[bold warning]{message}[/bold warning]", extra={'markup': True})
 
     def error(self, message):
-        self.logger.error(f"[bold error on white]{message}[/bold error on white]", extra={'markup': True})
+        self.logger.error(f"[on white][error]{message}[/error][/on white]", extra={'markup': True})
 
 
 logger = Logger()
