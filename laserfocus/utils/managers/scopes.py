@@ -1,7 +1,7 @@
 from functools import wraps
 from flask import request, jsonify
 from flask_jwt_extended import get_jwt, get_jwt_identity
-from logger import logger
+from ..logger import logger
 
 public_routes = ['docs', 'index', 'token', 'oauth.login', 'oauth.create']
 

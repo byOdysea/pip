@@ -5,8 +5,8 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 from functools import wraps
 from flask import jsonify
-from src.utils.logger import logger
-from src.utils.exception import handle_exception
+from ..logger import logger
+from ..exception import handle_exception
 import re
 from sqlalchemy import inspect
 
