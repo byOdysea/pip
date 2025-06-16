@@ -16,7 +16,7 @@ setup(
     url="https://github.com/laserfocus/pip",  # Optional: GitHub URL
     packages=find_packages(),  # Automatically finds your package
     install_requires=[
-        "Requests==2.32.3",
+        "Requests==2.32.4",
         "certifi==2024.7.4",
         "charset-normalizer==3.4.1",
         "idna==3.10",
