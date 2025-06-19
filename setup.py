@@ -23,7 +23,7 @@ setup(
         "markdown-it-py==3.0.0",
         "mdurl==0.1.2",
         "Pygments==2.19.1",
-        "urllib3==2.3.0",
+        "urllib3==2.5.0",
         "rich==13.9.3",
         "SQLAlchemy==2.0.35",
         "beautifulsoup4==4.12.3",
